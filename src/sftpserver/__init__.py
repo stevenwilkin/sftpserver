@@ -57,11 +57,14 @@ def start_server(host, port, keyfile, level):
             'sftp', paramiko.SFTPServer, StubSFTPServer)
 
         server = StubServer()
-        transport.start_server(server=server)
+        try:
+            transport.start_server(server=server)
 
-        channel = transport.accept()
-        while transport.is_active():
-            time.sleep(1)
+            channel = transport.accept()
+            while transport.is_active():
+                time.sleep(1)
+        except EOFError:
+            next
 
 
 def main():
